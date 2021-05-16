@@ -109,6 +109,8 @@ namespace RAWPhotosSorter
 
                     this.SelectedPhoto = this.Photos[this.Photos.IndexOf(this.SelectedPhoto) + direction];
                 }
+
+                this.Title = new FileInfo(this.SelectedPhoto.Path).Name;
             }
         }
 

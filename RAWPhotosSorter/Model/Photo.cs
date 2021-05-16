@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RAWPhotosSorter.Extensions;
+using System.Drawing;
+using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace RAWPhotosSorter.Model
@@ -11,11 +13,20 @@ namespace RAWPhotosSorter.Model
         public BitmapImage Source {
             get { 
                 if (source == null) {
+                    var image = Image.FromFile(this.Path);
+                    image.NormalizeOrientation();
                     var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new System.Uri(this.Path);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
+
+                    using (MemoryStream stream = new MemoryStream()) {
+                        image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        stream.Seek(0, SeekOrigin.Begin);
+
+                        // Tell the WPF BitmapImage to use this stream
+                        bitmap.BeginInit();
+                        bitmap.StreamSource = stream;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                    }
                     source = bitmap;
                 }
                 return source;

@@ -10,6 +10,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         KeyDown="Window_KeyDown" Closing="Window_Closing">
     <Grid>
-        <Image Source="{Binding SelectedPhoto.Source}"/>
+        <Image Name="PhotoControl" Source="{Binding SelectedPhoto.Source}"/>
     </Grid>
 </Window>
